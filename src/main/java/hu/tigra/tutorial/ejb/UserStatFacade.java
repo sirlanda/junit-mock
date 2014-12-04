@@ -2,7 +2,10 @@ package hu.tigra.tutorial.ejb;
 
 import hu.tigra.tutorial.dao.UserDAO;
 import hu.tigra.tutorial.dmo.User;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +34,27 @@ public class UserStatFacade {
         stat.put(AGE_GROUP_ADULTS, 0l);
         stat.put(AGE_GROUP_OLD_STAGERS, 0l);
 
-        /*List<User> users = userDAO.getUsersByPostCode(postcode);
+        List<User> users = userDAO.getUsersByPostCode(postcode);
         for (User user : users) {
+            int age = getAgeFromBirthDate(user.getDateOfBirth());
+            if (age < 15) {
+                stat.put(AGE_GROUP_KIDS, stat.get(AGE_GROUP_KIDS) + 1);
+            } else if (age < 19) {
+                stat.put(AGE_GROUP_TEENS, stat.get(AGE_GROUP_TEENS) + 1);
+            } else if (age < 26) {
+                stat.put(AGE_GROUP_STUDENTS, stat.get(AGE_GROUP_STUDENTS) + 1);
+            } else if (age < 41) {
+                stat.put(AGE_GROUP_ADULTS, stat.get(AGE_GROUP_ADULTS) + 1);
+            } else {
+                stat.put(AGE_GROUP_OLD_STAGERS, stat.get(AGE_GROUP_OLD_STAGERS) + 1);
+            }
+        }
 
-        }*/
         return stat;
+    }
+
+    private int getAgeFromBirthDate(Date dateOfBirth) {
+        return Years.yearsBetween(new DateTime(dateOfBirth.getTime()), DateTime.now()).getYears();
     }
 
 }
