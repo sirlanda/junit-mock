@@ -35,22 +35,27 @@ public class UserStatFacade {
         stat.put(AGE_GROUP_OLD_STAGERS, 0l);
 
         List<User> users = userDAO.getUsersByPostCode(postcode);
+
         for (User user : users) {
             int age = getAgeFromBirthDate(user.getDateOfBirth());
             if (age < 15) {
-                stat.put(AGE_GROUP_KIDS, stat.get(AGE_GROUP_KIDS) + 1);
+                incrementCounter(stat, AGE_GROUP_KIDS);
             } else if (age < 19) {
-                stat.put(AGE_GROUP_TEENS, stat.get(AGE_GROUP_TEENS) + 1);
+                incrementCounter(stat, AGE_GROUP_TEENS);
             } else if (age < 26) {
-                stat.put(AGE_GROUP_STUDENTS, stat.get(AGE_GROUP_STUDENTS) + 1);
+                incrementCounter(stat, AGE_GROUP_STUDENTS);
             } else if (age < 41) {
-                stat.put(AGE_GROUP_ADULTS, stat.get(AGE_GROUP_ADULTS) + 1);
+                incrementCounter(stat, AGE_GROUP_ADULTS);
             } else {
-                stat.put(AGE_GROUP_OLD_STAGERS, stat.get(AGE_GROUP_OLD_STAGERS) + 1);
+                incrementCounter(stat, AGE_GROUP_OLD_STAGERS);
             }
         }
 
         return stat;
+    }
+
+    private Long incrementCounter(Map<String, Long> stat, String ageGroup) {
+        return stat.put(ageGroup, stat.get(ageGroup) + 1);
     }
 
     private int getAgeFromBirthDate(Date dateOfBirth) {
