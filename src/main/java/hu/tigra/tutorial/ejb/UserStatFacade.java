@@ -34,7 +34,7 @@ public class UserStatFacade {
         stat.put(AGE_GROUP_ADULTS, 0l);
         stat.put(AGE_GROUP_OLD_STAGERS, 0l);
 
-        List<User> users = userDAO.getUsersByPostCode(postcode);
+        List<User> users = getUsersByPostCode(postcode);
 
         for (User user : users) {
             int age = getAgeFromBirthDate(user.getDateOfBirth());
@@ -52,6 +52,10 @@ public class UserStatFacade {
         }
 
         return stat;
+    }
+
+    List<User> getUsersByPostCode(String postcode) {
+        return userDAO.getUsersByPostCode(postcode);
     }
 
     private Long incrementCounter(Map<String, Long> stat, String ageGroup) {
